@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PATI Gold Rush</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a; /* Ngjyra e errët për sfond */
+            color: #f5f5f5; /* Ngjyra e bardhë për tekstin */
+        }
+        h1 {
+            margin: 10px 0; /* Margjina lart dhe poshtë titullit */
+            text-align: center;
+            font-size: 24px; /* Madhësia e titullit */
+            color: #FFD700; /* Ngjyra ari për titujt */
+            transition: color 0.3s; /* Efekti hover */
+        }
+        h1:hover {
+            color: #FFEA00; /* Ngjyrë më e lehtë kur kaloni me miun */
+        }
+        /* Konteineri i iframe-it */
+        #iframeContainer {
+            max-width: 1200px; /* Gjerësia maksimale */
+            margin: 20px auto; /* Centron iframe-in */
+            border-radius: 8px; /* Këndet e rrumbullakosura */
+            overflow: hidden; /* Mundëson rrumbullakosjen */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Hije për efekt 3D */
+            background-color: #2c2c2c; /* Ngjyra e errët për sfondin e iframe-it */
+            padding: 20px; /* Mbushja e brendshme */
+        }
+        iframe {
+            width: 100%;
+            border: none; /* Hiq kufirin */
+            border-radius: 4px; /* Këndet e rrumbullakosura për iframe */
+            transition: transform 0.3s; /* Efekti hover */
+        }
+        iframe:hover {
+            transform: scale(1.02); /* Zmadho iframe-in kur kaloni me miun */
+        }
+        /* Stilet për iframe-in e dashboard-it */
+        #dashboardIframe {
+            height: 192px; /* Lartësia për dashboard */
+            margin-top: 20px; /* Margjina për të krijuar hapësirë lart */
+        }
+        /* Stilet për iframe-in e TradingView */
+        #tradingViewIframe {
+            height: 500px; /* Lartësia për TradingView */
+            margin-top: 20px; /* Margjina për të krijuar hapësirë lart */
+        }
+        /* Stilet për iframe-in e kalendarit ekonomik */
+        #economicCalendarIframe {
+            height: 900px; /* Rritur lartësia për kalendarin ekonomik */
+            margin-top: 20px; /* Margjina për të krijuar hapësirë lart */
+        }
+
+        /* Stilet për input-in e indeksit të USD */
+        #usdIndexContainer {
+            margin-top: 10px; /* Vendos hapësirë mbi div-in */
+            text-align: center;
+            font-size: 14px; /* Madhësia e tekstit për indeksin */
+            color: #FFD700; /* Ngjyra ari për tekstin */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        input[type="text"] {
+            padding: 3px;
+            font-size: 12px;
+            border: none;
+            border-radius: 4px;
+            margin-right: 5px;
+            width: 100px;
+        }
+        button {
+            padding: 3px 8px;
+            font-size: 12px;
+            background-color: #FFD700;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #FFEA00;
+        }
+        /* Stilet për notepad */
+        #notepadContainer {
+            margin-top: 20px; /* Vendos hapësirë mbi div-in */
+            text-align: center;
+            font-size: 16px; /* Madhësia e tekstit për titullin e notepad-it */
+            color: #FFD700; /* Ngjyra ari për tekstin */
+        }
+        textarea {
+            width: 100%;
+            height: 900px; /* E njëjta lartësi si kalendari ekonomik */
+            padding: 10px;
+            font-size: 14px;
+            background-color: #2c2c2c;
+            color: #f5f5f5;
+            border: none;
+            border-radius: 4px;
+            resize: none; /* Heq mundësinë për të ndryshuar madhësinë e notepad-it */
+        }
+    </style>
+</head>
+<body>
+    <h1>PATI Gold Rush</h1>
+    <div id="iframeContainer">
+        <!-- Iframe për dashboardin -->
+        <iframe id="dashboardIframe" src="https://invesery.com/dashboard/forex/cs"></iframe>
+
+        <!-- Div për shënimin manual të indeksit USD -->
+        <div id="usdIndexContainer">
+            <p>Indeksi USD:</p>
+            <input type="text" id="usdIndexInput" placeholder="Shkruaj vlerën">
+            <button onclick="saveUSDIndex()">Ruaj</button>
+            <p>Vlera e fundit: <span id="savedUSDIndex">N/A</span></p>
+        </div>
+
+        <!-- Iframe për TradingView -->
+        <iframe id="tradingViewIframe" src="https://www.tradingview.com/widgetembed/?frameElementId=tradingview_5ca01&symbol=TVC%3ADXY&interval=1&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=&theme=light&style=1&timezone=Etc%2FUTC&withdateranges=1&allow_symbol_change=1&hideideas=1&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=en&utm_source=www.example.com&utm_medium=widget&utm_campaign=chart&utm_term=TVC%3ADXY"></iframe>
+        
+        <!-- Iframe për kalendarin ekonomik -->
+        <iframe id="economicCalendarIframe" src="https://www.investing.com/economic-calendar/"></iframe>
+
+        <!-- Notepad në fund të faqes -->
+        <div id="notepadContainer">
+            <h2>Notepad</h2>
+            <textarea id="notepad" placeholder="Shkruaj shënimet e tua këtu..."></textarea>
+        </div>
+    </div>
+    
+    <script>
+        // Funksioni për të ruajtur indeksin manualisht
+        function saveUSDIndex() {
+            const usdIndex = document.getElementById('usdIndexInput').value; // Merr vlerën nga input-i
+            if (usdIndex) {
+                document.getElementById('savedUSDIndex').textContent = usdIndex; // Shfaq vlerën e ruajtur
+                document.getElementById('usdIndexInput').value = ''; // Pastro fushën e input-it pas ruajtjes
+            } else {
+                alert('Ju lutemi shënoni një vlerë të indeksit USD!'); // Tregon një alert nëse input-i është bosh
+            }
+        }
+    </script>
+</body>
+</html>
